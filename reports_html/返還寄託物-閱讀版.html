@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>返還寄託物 — 閱讀版報告</title>
+  <style>
+:root {
+  color-scheme: light;
+  --paper: #fbfaf7;
+  --ink: #1f2428;
+  --muted: #667085;
+  --line: #d8d3c7;
+  --accent: #245c7a;
+  --accent-soft: #e5f0f4;
+  --warn-soft: #fff4d6;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", Arial, sans-serif;
+  line-height: 1.75;
+}
+.layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  min-height: 100vh;
+}
+nav {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: auto;
+  padding: 28px 20px;
+  border-right: 1px solid var(--line);
+  background: #f3f1ea;
+}
+nav h2 {
+  margin: 0 0 16px;
+  font-size: 18px;
+}
+nav a {
+  display: block;
+  margin: 7px 0;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 14px;
+}
+nav a:hover { text-decoration: underline; }
+nav .level-1 { font-weight: 700; margin-top: 14px; }
+nav .level-2 { padding-left: 10px; }
+nav .level-3 { padding-left: 22px; color: var(--muted); }
+main {
+  max-width: 1080px;
+  padding: 42px 56px 72px;
+}
+.meta {
+  margin-bottom: 28px;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  background: #fffdf8;
+}
+h1, h2, h3, h4 {
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+h1 {
+  margin: 0 0 18px;
+  font-size: 32px;
+  border-bottom: 3px solid var(--accent);
+  padding-bottom: 12px;
+}
+h2 {
+  margin-top: 42px;
+  padding-top: 12px;
+  font-size: 24px;
+  border-top: 1px solid var(--line);
+}
+h3 { margin-top: 30px; font-size: 20px; color: #333; }
+p { margin: 12px 0; }
+blockquote {
+  margin: 18px 0;
+  padding: 12px 18px;
+  border-left: 5px solid var(--accent);
+  background: var(--accent-soft);
+}
+blockquote p { margin: 4px 0; }
+hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 28px 0;
+}
+.table-wrap {
+  overflow-x: auto;
+  margin: 18px 0 24px;
+  border: 1px solid var(--line);
+  background: white;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 680px;
+}
+th, td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  vertical-align: top;
+}
+th {
+  background: #ece8dd;
+  text-align: left;
+  white-space: nowrap;
+}
+tr:nth-child(even) td { background: #fffdf8; }
+ul, ol { padding-left: 1.45rem; }
+li { margin: 6px 0; }
+.check-item {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  margin-left: -1.2rem;
+}
+.check-item input {
+  width: 18px;
+  height: 18px;
+  margin-top: 5px;
+  accent-color: var(--accent);
+}
+code {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--warn-soft);
+  font-family: Consolas, "Courier New", monospace;
+}
+@media (max-width: 900px) {
+  .layout { display: block; }
+  nav {
+    position: relative;
+    height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  main { padding: 28px 18px 48px; }
+  h1 { font-size: 26px; }
+}
+@media print {
+  body { background: white; }
+  .layout { display: block; }
+  nav { display: none; }
+  main { max-width: none; padding: 0; }
+  a { color: inherit; text-decoration: none; }
+  h1, h2 { break-after: avoid; }
+  .table-wrap { overflow: visible; }
+  table { min-width: 0; font-size: 10.5pt; }
+}
+</style>
+</head>
+<body>
+  <div class="layout">
+    <nav>
+      <h2>目錄</h2>
+      <a class="level-1" href="#返還寄託物--爭點光譜">返還寄託物 — 爭點光譜</a>
+<a class="level-2" href="#〇語料的事實分型先看案件長什麼樣">〇、語料的事實分型（先看案件長什麼樣）</a>
+<a class="level-2" href="#爭點一寄託契約是否成立最核心勝敗關鍵">爭點一：寄託契約是否成立（最核心、勝敗關鍵）</a>
+<a class="level-2" href="#爭點二一般寄託-v-消費寄託之定性影響返還客體與請求權基礎">爭點二：一般寄託 v. 消費寄託之定性（影響返還客體與請求權基礎）</a>
+<a class="level-2" href="#爭點三消費寄託之返還請求與催告602-準用-478">爭點三：消費寄託之返還請求與催告（§602 準用 §478）</a>
+<a class="level-2" href="#爭點四受寄人之返還抗辯">爭點四：受寄人之返還抗辯</a>
+<a class="level-2" href="#爭點五金融機構消費寄託之冒領風險分配C-型特則">爭點五：金融機構消費寄託之冒領風險分配（C 型特則）</a>
+<a class="level-2" href="#爭點六消費寄託-v-第三人異議之訴D-型核心法律障礙">爭點六：消費寄託 v. 第三人異議之訴（D 型核心法律障礙）</a>
+<a class="level-2" href="#爭點七與相鄰請求權之競合及選擇請求權基礎之佈局">爭點七：與相鄰請求權之競合及選擇（請求權基礎之佈局）</a>
+<a class="level-2" href="#附與勝敗相關之觀察中立陳述非預測">附：與「勝敗」相關之觀察（中立陳述，非預測）</a>
+<a class="level-1" href="#返還寄託物--辦案檢核清單審理流程-SOP">返還寄託物 — 辦案檢核清單／審理流程 SOP</a>
+<a class="level-2" href="#A-程序面受理言詞辯論前">A. 程序面（受理～言詞辯論前）</a>
+<a class="level-2" href="#B-契約成立要件爭點一最須先釐清">B. 契約成立要件（爭點一，最須先釐清）</a>
+<a class="level-2" href="#C-契約定性爭點二">C. 契約定性（爭點二）</a>
+<a class="level-2" href="#D-返還請求與催告爭點三">D. 返還請求與催告（爭點三）</a>
+<a class="level-2" href="#E-受寄人抗辯之調查爭點四">E. 受寄人抗辯之調查（爭點四）</a>
+<a class="level-2" href="#F-特別類型專屬節點">F. 特別類型專屬節點</a>
+<a class="level-2" href="#G-主文與假執行">G. 主文與假執行</a>
+<a class="level-3" href="#常見卡關應再調查訊號語料中反覆出現">常見「卡關／應再調查」訊號（語料中反覆出現）</a>
+<a class="level-1" href="#返還寄託物--常引按語與法條清單">返還寄託物 — 常引按語與法條清單</a>
+<a class="level-2" href="#一常引法條實體法民法">一、常引法條（實體法・民法）</a>
+<a class="level-2" href="#二常引法條程序法">二、常引法條（程序法）</a>
+<a class="level-2" href="#三反覆出現之最高法院按語附原文摘錄與代表案">三、反覆出現之最高法院按語（附原文摘錄與代表案）</a>
+<a class="level-3" href="#按語群-A消費寄託之定義與金錢推定">按語群 A：消費寄託之定義與金錢推定</a>
+<a class="level-3" href="#按語群-B金融機構乙種活存消費寄託冒領風險歸銀行">按語群 B：金融機構乙種活存＝消費寄託，冒領風險歸銀行</a>
+<a class="level-3" href="#按語群-C金錢存入帳戶所有權移轉存款人僅有債權">按語群 C：金錢存入帳戶所有權移轉、存款人僅有債權</a>
+<a class="level-3" href="#按語群-D第三人異議之訴須有足以排除執行之物權">按語群 D：第三人異議之訴須有足以排除執行之物權</a>
+<a class="level-3" href="#按語群-E債權準占有人之認定民-310③-交錯">按語群 E：債權準占有人之認定（民 §310③ 交錯）</a>
+<a class="level-3" href="#按語群-F消費寄託未定期限之催告返還">按語群 F：消費寄託未定期限之催告返還</a>
+<a class="level-2" href="#四語料內出現之其他引用判決頻率彙整">四、語料內出現之其他引用判決（頻率彙整）</a>
+<a class="level-3" href="#資料來源與侷限">資料來源與侷限</a>
+    </nav>
+    <main>
+      <div class="meta">
+        <strong>返還寄託物 — 閱讀版報告</strong><br>
+        由 reports 內 Markdown 報告合併產生；法律內容請以原報告及原裁判全文回查核對。
+      </div>
+      <h1 id="返還寄託物--爭點光譜">返還寄託物 — 爭點光譜</h1>
+<blockquote>
+<p><strong>語料</strong>：司法院裁判書 74 篇民事<strong>判決</strong>（已濾除裁定），最高法院 1 篇、臺灣高等法院 33 篇、臺灣臺北地方法院 40 篇，裁判年度民國 110–114 年。</p>
+<p><strong>性質</strong>：本文中立彙整實務上反覆出現之爭點與見解分布、事實分型，<strong>不下結論、不評價、不提供個案建議</strong>。引用字號供回溯查證，非窮盡。</p>
+</blockquote>
+<hr>
+<h2 id="〇語料的事實分型先看案件長什麼樣">〇、語料的事實分型（先看案件長什麼樣）</h2>
+<p>「返還寄託物」之名下，實際涵蓋數種差異很大的事實類型，爭點隨類型而異：</p>
+<div class="table-wrap"><table><thead><tr>
+<th>分型</th>
+<th>典型事實</th>
+<th>代表案例</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>A. 親屬／伴侶間金錢保管</strong></td>
+<td>離婚配偶、姊妹、母子女、男女朋友把現金「交對方保管」，事後請求返還</td>
+<td>[1]109上易869、[14]110上467、[19]111上易1309、[22]111重上899、[26]112上易294、[46]111重訴43、[48]110訴340、[65]113訴6826</td>
+</tr>
+<tr>
+<td><strong>B. 虛擬資產交易平台</strong></td>
+<td>幣寶 BITPoint、ACE Exchange 等平台停業，用戶請求返還寄存之虛擬貨幣</td>
+<td>[10]110上305、[33]113上661、[34]109訴8215、[67]114訴2691、[68]114訴2690、[69]114重訴821、[70]114訴3161、[72]114訴6297、[73]114訴5623</td>
+</tr>
+<tr>
+<td><strong>C. 金融機構存款冒領</strong></td>
+<td>乙種活存遭偽刻印章／盜領，風險誰負擔</td>
+<td>[9]110上194</td>
+</tr>
+<tr>
+<td><strong>D. 第三人異議之訴／借名存款</strong></td>
+<td>執行債務人名下存款實為他人所存，第三人異議排除執行</td>
+<td>[2]109上易1264、[35]109重訴1080、[43]111訴919</td>
+</tr>
+<tr>
+<td><strong>E. 保管特定物返還</strong></td>
+<td>印章、股票、權狀、古董、機台、黃金、攝影作品、證件等</td>
+<td>[15]110上784、[25]112上449、[28]113上111、[30]111重上413、[38]109訴3492、[42]111訴1208、[66]113訴7193、[71]114訴3098</td>
+</tr>
+<tr>
+<td><strong>F. 遺產／繼承脈絡之寄託返還</strong></td>
+<td>繼承人請求返還被繼承人生前寄託物或交付遺產</td>
+<td>[5]109重上528、[37]109重家繼訴65、[53]111訴4611、[62]113訴2591、[64]113訴6354</td>
+</tr>
+</tbody></table></div>
+<hr>
+<h2 id="爭點一寄託契約是否成立最核心勝敗關鍵">爭點一：寄託契約是否成立（最核心、勝敗關鍵）</h2>
+<p><strong>多數案件的決勝點。</strong> 寄託人須就「①寄託物之交付」與「②雙方有保管之合意」負舉證責任（民訴 §277）。</p>
+<p><strong>見解分布／事實分型：</strong></p>
+<ul>
+<li><strong>主流操作</strong>：交付有客觀證據（匯款紀錄、保管條、存證信函催告、對方於他案自認）→ 多認契約成立（如 [46]111重訴43「系爭保管條」、[39]110訴6876 對造於家事案件已承認、[22]111重上899）。</li>
+<li><strong>對立抗辯之競合</strong>——受寄人常抗辯款項性質非寄託，而是：</li>
+<li><em>借貸</em>（[20]111上易527、[46]）</li>
+<li><em>贈與／免除</em>（[22] 主張已各贈與 400 萬、免除返還義務）</li>
+<li><em>擔保</em>（[18]111上易1097 主張黃金為借款擔保品）</li>
+<li><em>買賣價金、投資款</em>（[51]111訴5142、B 型平台案）</li>
+<li><strong>僅交付、無保管合意之證明</strong>：常認契約不成立或舉證不足而駁回（[45]110重訴341、[59]112訴1507、[62]113訴2591、[71]114訴3098）。</li>
+<li><strong>親屬間交付</strong>：實務反覆強調「親屬間金錢往來原因多端（贈與、扶養、借貸、保管均有可能）」，不因交付即推認寄託，仍須證明保管合意（A、F 型常見駁回理由）。</li>
+</ul>
+<hr>
+<h2 id="爭點二一般寄託-v-消費寄託之定性影響返還客體與請求權基礎">爭點二：一般寄託 v. 消費寄託之定性（影響返還客體與請求權基礎）</h2>
+<p>實務區辨穩定，屬<strong>定性而非見解對立</strong>，但定性結果牽動全案：</p>
+<div class="table-wrap"><table><thead><tr>
+<th></th>
+<th>一般（特定物）寄託</th>
+<th>消費寄託</th>
+</tr></thead><tbody>
+<tr>
+<td>法條</td>
+<td>民 §589、§597、§598</td>
+<td>民 §602、§603、準用 §478</td>
+</tr>
+<tr>
+<td>客體</td>
+<td>特定物，受寄人<strong>保管原物</strong></td>
+<td>金錢／代替物，<strong>所有權移轉</strong>受寄人</td>
+</tr>
+<tr>
+<td>返還</td>
+<td>返還<strong>原物</strong>（§597 寄託人得隨時請求）</td>
+<td>返還<strong>同種類、品質、數量</strong>之物</td>
+</tr>
+<tr>
+<td>金錢</td>
+<td>—</td>
+<td>§603「寄託物為金錢時，<strong>推定為消費寄託</strong>」</td>
+</tr>
+</tbody></table></div>
+<ul>
+<li><strong>金錢保管</strong>幾乎一律落入消費寄託（§602/§603 準用 §478），代表案極多（[14][19][26][31][46][48][54][55][65]）。</li>
+<li><strong>特定物（印章、股票、權狀、古董、實體物）</strong> 走 §589/§597/§598 一般寄託（E 型，[15][25][28][42][66][71]）。</li>
+<li><strong>虛擬資產</strong>（B 型）：實務多認屬消費寄託或委任投資之混合，返還客體為「同種類、數量之虛擬貨幣」（[68] 主文命返還泰達幣顆數、[73] 命返還 USDT 本金）。定性仍在累積中。</li>
+</ul>
+<hr>
+<h2 id="爭點三消費寄託之返還請求與催告602-準用-478">爭點三：消費寄託之返還請求與催告（§602 準用 §478）</h2>
+<p><strong>穩定見解</strong>：未定返還期限之消費寄託，受寄人得隨時返還，寄託人<strong>得定一個月以上之相當期限催告返還</strong>（民 §478 後段，經 §602 準用）。</p>
+<ul>
+<li>催告之有無與期間，常影響<strong>利息起算日</strong>與請求是否成立（[14]110上467、[19]111上易1309、[31]113上903、[65]113訴6826）。</li>
+<li>多以存證信函、律師函為催告（[14][22][65]）。</li>
+</ul>
+<hr>
+<h2 id="爭點四受寄人之返還抗辯">爭點四：受寄人之返還抗辯</h2>
+<ul>
+<li><strong>已返還（清償）抗辯</strong>：通說由<strong>受寄人（被告）就清償之事實負舉證責任</strong>（[19]111上易1309 受寄人抗辯已於咖啡廳當面返還，因舉證不足不採；[26]112上易294 部分返還之認定）。</li>
+<li><strong>第三人冒領（C 型）</strong>：見爭點五之金融機構特則。</li>
+<li><strong>消滅時效</strong>、<strong>抵銷</strong>、<strong>款項已轉作他用</strong>等individuated 抗辯，依個案事實認定。</li>
+</ul>
+<hr>
+<h2 id="爭點五金融機構消費寄託之冒領風險分配C-型特則">爭點五：金融機構消費寄託之冒領風險分配（C 型特則）</h2>
+<p><strong>穩定且高度制度化之見解群</strong>（[9]110上194 完整援引）：</p>
+<ul>
+<li>金融機構與存款戶間為<strong>消費寄託</strong>；金錢之利益與危險於交付時移轉受寄人（民 §603 II）。</li>
+<li>存款<strong>遭第三人冒領者，受損害者為銀行</strong>，存款人對銀行<strong>仍得行使寄託物返還請求權</strong>，不因冒領而謂其權利受侵害（最高法院 55 年台上字第 3018 號）。</li>
+<li>銀行縱以肉眼判別印章真偽無過失，第三人偽刻印章冒領，銀行<strong>僅得對冒領人請求損害賠償，不得以冒領對存款人主張清償效力</strong>（最高法院 57 年台上字第 2965 號、104 年度台上字第 243 號）。</li>
+<li>與「<strong>債權準占有人</strong>」(民 §310③) 之交錯：持有存摺、印章、金融卡足使他人認其為債權人者，方為準占有人；僅持竊得之身分證、偽刻印章者，<strong>非</strong>準占有人，銀行清償不生效力（[9] 之詳細論述）。</li>
+</ul>
+<hr>
+<h2 id="爭點六消費寄託-v-第三人異議之訴D-型核心法律障礙">爭點六：消費寄託 v. 第三人異議之訴（D 型核心法律障礙）</h2>
+<p><strong>穩定見解，且常為借名存款者敗訴主因</strong>（[43]111訴919 完整論述）：</p>
+<ul>
+<li>金錢存入帳戶後，<strong>所有權因混同移轉於金融機構</strong>，存款人僅取得「消費寄託物返還請求權」之<strong>債權</strong>，非所有物返還之<strong>物權</strong>（最高法院 93 年度台上字第 1735 號）。</li>
+<li>強制執行法 §15 第三人異議之訴，<strong>須對執行標的物有所有權、典權、留置權、質權等足以排除執行之物權</strong>（最高法院 103 年度台上字第 860 號）。</li>
+<li>故借名存款人對被執行之存款<strong>無所有權</strong>，提第三人異議之訴<strong>多遭駁回</strong>（[2][35][43] 一致）。</li>
+<li>另見變化型：對「交付請求權」之確認（[57]112訴5846 確認債權存在之訴）。</li>
+</ul>
+<hr>
+<h2 id="爭點七與相鄰請求權之競合及選擇請求權基礎之佈局">爭點七：與相鄰請求權之競合及選擇（請求權基礎之佈局）</h2>
+<p>語料中原告極常以<strong>多重請求權擇一／備位</strong>主張，反映實務攻防樣態：</p>
+<ul>
+<li><strong>寄託（§597／§602準§478）</strong> ←→ <strong>委任返還（§541）</strong>：保管兼有處理事務性質時併用（[1][12][50][66][68]）。</li>
+<li><strong>寄託</strong> ←→ <strong>不當得利（§179）</strong>：契約不成立時之備位（[3][13][22][23][62][65]）。</li>
+<li><strong>寄託</strong> ←→ <strong>所有物返還（§767）</strong>：特定物之物權請求（[6][15][28][36][66][71]）。</li>
+<li><strong>寄託</strong> ←→ <strong>侵權／給付不能（§184、§226）</strong>：受寄人侵占、致返還不能（[12][13][30][32]）。</li>
+<li>第二審常見<strong>追加請求權基礎</strong>（民訴 §446、§255），多以「基礎事實同一」准許（[13][20][28][31][44][52]）。</li>
+</ul>
+<hr>
+<h2 id="附與勝敗相關之觀察中立陳述非預測">附：與「勝敗」相關之觀察（中立陳述，非預測）</h2>
+<ul>
+<li>A／F 型（親屬間金錢）駁回比例顯著，核心多卡在<strong>爭點一之保管合意舉證</strong>。</li>
+<li>B 型（虛擬資產平台停業）原告勝訴而命返還者多（[68][69][70][73]），被告多一造辯論未到。</li>
+<li>C 型銀行多敗（存款人得請求返還）。</li>
+<li>D 型借名存款提第三人異議之訴多敗（爭點六）。</li>
+</ul>
+<p><em>（以上為語料分布之客觀描述，個案結果繫於具體事證，不得逕予套用。）</em></p><hr><h1 id="返還寄託物--辦案檢核清單審理流程-SOP">返還寄託物 — 辦案檢核清單／審理流程 SOP</h1>
+<blockquote>
+<p>從 74 篇民事判決反覆出現之調查事項與程序節點歸納而成之<strong>可勾選檢核表</strong>。</p>
+<p>用途為提示「該查什麼、該命兩造表明什麼」，<strong>非裁判結論、非法律意見</strong>；個案仍依具體事證認定。</p>
+</blockquote>
+<hr>
+<h2 id="A-程序面受理言詞辯論前">A. 程序面（受理～言詞辯論前）</h2>
+<ul>
+<li class="check-item"><input type="checkbox" disabled><span><strong>管轄</strong>：有無合意管轄條款（寄託單／使用條款常見）？涉外案件（虛擬資產平台、海外帳戶）有無國際管轄與準據法問題（涉外民事法律適用法 §20）？ → [34][60][72] 幣寶系列、[68] ACE</span></li>
+<li class="check-item"><input type="checkbox" disabled><span><strong>當事人能力／適格</strong>：受寄人死亡之繼承人承受、法人清算人、遺囑執行人、遺產管理人之當事人適格？ → [5][37][53][54][64]</span></li>
+<li class="check-item"><input type="checkbox" disabled><span><strong>訴之變更追加</strong>：原告是否於二審追加請求權基礎或聲明？是否「基礎事實同一」（民訴 §255／§446）？ → [13][20][28][31][44][52]</span></li>
+<li class="check-item"><input type="checkbox" disabled><span><strong>一造辯論</strong>：被告（常為平台、失聯受寄人）受合法通知未到，是否符合民訴 §386？ → [42][47][67][68][69][70][73]</span></li>
+<li class="check-item"><input type="checkbox" disabled><span><strong>訴訟標的價額／裁判費</strong>：金錢寄託以請求金額核定。</span></li>
+</ul>
+<h2 id="B-契約成立要件爭點一最須先釐清">B. 契約成立要件（爭點一，最須先釐清）</h2>
+<ul>
+<li class="check-item"><input type="checkbox" disabled><span><strong>寄託物之交付</strong>有何證據？（匯款明細、保管條／保管單、存證信函、對造他案自認、證人）</span></li>
+<li class="check-item"><input type="checkbox" disabled><span><strong>保管合意</strong>有何證據？是否區別於「贈與／借貸／擔保／買賣價金／投資款」？</span></li>
+<li class="check-item"><input type="checkbox" disabled><span>命<strong>原告具體表明</strong>：交付時間、方式、金額／標的、有無約定返還期限、有無約定利息。</span></li>
+<li class="check-item"><input type="checkbox" disabled><span>命<strong>被告具體表明</strong>：否認交付？或承認收受但抗辯款項性質為何（借貸／贈與／擔保／已用於特定用途）？</span></li>
+<li class="check-item"><input type="checkbox" disabled><span><strong>親屬／伴侶間</strong>交付：有無排除「親屬間金錢往來原因多端」之合理說明？</span></li>
+</ul>
+<h2 id="C-契約定性爭點二">C. 契約定性（爭點二）</h2>
+<ul>
+<li class="check-item"><input type="checkbox" disabled><span>標的為<strong>金錢／代替物</strong>（→ 消費寄託 §602／§603 準用 §478）或<strong>特定物</strong>（→ 一般寄託 §589／§597／§598）？</span></li>
+<li class="check-item"><input type="checkbox" disabled><span>若為消費寄託：返還客體為「同種類、品質、數量」之物，主文措辭是否相應？</span></li>
+<li class="check-item"><input type="checkbox" disabled><span>虛擬資產：返還標的之<strong>幣種與數量</strong>如何特定（主文可否執行）？ → [68] 命返還顆數、[73] 命返還本金＋利息</span></li>
+</ul>
+<h2 id="D-返還請求與催告爭點三">D. 返還請求與催告（爭點三）</h2>
+<ul>
+<li class="check-item"><input type="checkbox" disabled><span>有無約定返還期限？未定期限者，原告是否已<strong>定一個月以上相當期限催告</strong>（§478 後段準用）？</span></li>
+<li class="check-item"><input type="checkbox" disabled><span>催告之方式與到達（存證信函／律師函／起訴狀繕本送達）？</span></li>
+<li class="check-item"><input type="checkbox" disabled><span><strong>利息起算日</strong>之認定（催告期滿翌日／起訴狀送達翌日）。</span></li>
+</ul>
+<h2 id="E-受寄人抗辯之調查爭點四">E. 受寄人抗辯之調查（爭點四）</h2>
+<ul>
+<li class="check-item"><input type="checkbox" disabled><span><strong>已返還（清償）</strong>抗辯 → 提示由<strong>被告負舉證責任</strong>；查交付返還之證據。 → [19][26]</span></li>
+<li class="check-item"><input type="checkbox" disabled><span>消滅時效、抵銷、款項已依約定用途支出等抗辯之事證。</span></li>
+<li class="check-item"><input type="checkbox" disabled><span>一部返還之金額認定。</span></li>
+</ul>
+<h2 id="F-特別類型專屬節點">F. 特別類型專屬節點</h2>
+<ul>
+<li class="check-item"><input type="checkbox" disabled><span><strong>金融機構冒領（C 型）</strong>：印鑑變更／補發存摺金融卡之核對程序、銀行有無盡善良管理人注意義務、冒領人是否為「債權準占有人」（持有存摺＋印章＋金融卡 v. 僅持竊得證件）。 → [9]</span></li>
+<li class="check-item"><input type="checkbox" disabled><span><strong>第三人異議之訴（D 型）</strong>：執行標的為「存款債權」者，第三人對之僅有債權而無物權 → 提示第三人異議之訴須有所有權等物權（強執 §15）；借名存款人是否誤認有所有權。 → [2][35][43]</span></li>
+<li class="check-item"><input type="checkbox" disabled><span><strong>遺產／繼承（F 型）</strong>：寄託物是否屬遺產、應返還予全體繼承人公同共有或按應繼分；遺囑執行人之權限。 → [37][53][64]</span></li>
+<li class="check-item"><input type="checkbox" disabled><span><strong>特定物返還不能（E 型）</strong>：是否併為「如不能返還，給付相當價額」之代償給付聲明（民 §226）？ → [44][50]</span></li>
+<li class="check-item"><input type="checkbox" disabled><span><strong>虛擬資產平台停業（B 型）</strong>：平台公告停業、主管機關公告、使用條款終止之認定。 → [69][70]</span></li>
+</ul>
+<h2 id="G-主文與假執行">G. 主文與假執行</h2>
+<ul>
+<li class="check-item"><input type="checkbox" disabled><span>金錢給付 v. 特定物返還 v. 代替物返還，主文措辭是否精確、可執行。</span></li>
+<li class="check-item"><input type="checkbox" disabled><span>假執行擔保金之酌定。</span></li>
+<li class="check-item"><input type="checkbox" disabled><span>訴訟費用分擔（一部勝訴之比例）。</span></li>
+</ul>
+<hr>
+<h3 id="常見卡關應再調查訊號語料中反覆出現">常見「卡關／應再調查」訊號（語料中反覆出現）</h3>
+<ol>
+<li>只證明「有交付金錢」卻未證明「保管合意」→ 爭點一舉證不足之最大宗。</li>
+<li>親屬間交付未排除贈與／扶養之可能。</li>
+<li>借名存款人誤以第三人異議之訴排除執行（應釐清其僅有債權）。</li>
+<li>未定期限消費寄託未先合法催告即起訴，影響利息及請求時點。</li>
+<li>特定物可能已滅失，未預為代償給付之聲明。</li>
+</ol><hr><h1 id="返還寄託物--常引按語與法條清單">返還寄託物 — 常引按語與法條清單</h1>
+<blockquote>
+<p>依 74 篇民事判決統計之引用頻率排序，並摘錄反覆出現之最高法院按語原文（附代表案）。</p>
+<p>頻率＝「出現之判決篇數」（同篇同條僅計一次）。<strong>客觀彙整，不代表本文見解。</strong></p>
+</blockquote>
+<hr>
+<h2 id="一常引法條實體法民法">一、常引法條（實體法・民法）</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>篇數</th>
+<th>法條</th>
+<th>規範重點</th>
+</tr></thead><tbody>
+<tr>
+<td>29</td>
+<td><strong>民法 §589</strong></td>
+<td>寄託之定義（一方交付物、他方允為保管）</td>
+</tr>
+<tr>
+<td>24</td>
+<td><strong>民法 §602</strong></td>
+<td>消費寄託；代替物所有權移轉、準用消費借貸</td>
+</tr>
+<tr>
+<td>22</td>
+<td>民法 §179</td>
+<td>不當得利（契約不成立時之備位請求）</td>
+</tr>
+<tr>
+<td>13</td>
+<td>民法 §184</td>
+<td>侵權行為（受寄人侵占／致返還不能）</td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>民法 §597</strong></td>
+<td>寄託物返還——寄託人<strong>得隨時請求返還</strong></td>
+</tr>
+<tr>
+<td>12</td>
+<td>民法 §767</td>
+<td>所有物返還請求權（特定物之物權請求）</td>
+</tr>
+<tr>
+<td>12</td>
+<td>民法 §226</td>
+<td>可歸責給付不能之損害賠償（返還不能）</td>
+</tr>
+<tr>
+<td>12</td>
+<td>民法 §229</td>
+<td>給付遲延、利息起算</td>
+</tr>
+<tr>
+<td>9</td>
+<td>民法 §598</td>
+<td>受寄人之返還（得隨時返還／期前返還限制）</td>
+</tr>
+<tr>
+<td>9</td>
+<td>民法 §541</td>
+<td>委任之交付收取物（與寄託競合）</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>民法 §603</strong></td>
+<td>寄託物為金錢時<strong>推定為消費寄託</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>民法 §478</strong></td>
+<td>消費借貸返還＋未定期限之催告（經 §602 準用）</td>
+</tr>
+<tr>
+<td>4</td>
+<td>民法 §549</td>
+<td>委任終止</td>
+</tr>
+<tr>
+<td>3</td>
+<td>民法 §590</td>
+<td>受寄人保管之注意義務</td>
+</tr>
+<tr>
+<td>3</td>
+<td>民法 §310</td>
+<td>向第三人（準占有人）清償之效力</td>
+</tr>
+<tr>
+<td>3–4</td>
+<td>民法 §1215、§1216</td>
+<td>遺囑執行人之權限（F 型繼承脈絡）</td>
+</tr>
+</tbody></table></div>
+<blockquote>
+<p><strong>核心請求權骨架</strong>：§589／§597／§598（一般寄託，特定物）｜§602／§603／§478（消費寄託，金錢及代替物）｜§179、§767、§541、§226（競合／備位請求權）。</p>
+</blockquote>
+<h2 id="二常引法條程序法">二、常引法條（程序法）</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>篇數</th>
+<th>法條</th>
+<th>用途</th>
+</tr></thead><tbody>
+<tr>
+<td>26</td>
+<td>民訴 §78、§79</td>
+<td>訴訟費用負擔</td>
+</tr>
+<tr>
+<td>22</td>
+<td>民訴 §466</td>
+<td>第三審上訴利益額（二審判決常見）</td>
+</tr>
+<tr>
+<td>19</td>
+<td><strong>民訴 §277</strong></td>
+<td>舉證責任分配（爭點一、四之核心）</td>
+</tr>
+<tr>
+<td>19</td>
+<td>民訴 §255、§446</td>
+<td>訴之變更追加（基礎事實同一）</td>
+</tr>
+<tr>
+<td>18</td>
+<td>民訴 §386</td>
+<td>一造辯論判決（被告未到）</td>
+</tr>
+<tr>
+<td>15</td>
+<td>民訴 §449</td>
+<td>上訴無理由駁回</td>
+</tr>
+<tr>
+<td>3</td>
+<td>強執 §15</td>
+<td>第三人異議之訴（D 型）</td>
+</tr>
+<tr>
+<td>3</td>
+<td>涉外民事法律適用法 §20</td>
+<td>涉外（虛擬資產平台、海外帳戶）準據法</td>
+</tr>
+</tbody></table></div>
+<hr>
+<h2 id="三反覆出現之最高法院按語附原文摘錄與代表案">三、反覆出現之最高法院按語（附原文摘錄與代表案）</h2>
+<h3 id="按語群-A消費寄託之定義與金錢推定">按語群 A：消費寄託之定義與金錢推定</h3>
+<blockquote>
+<p>「稱寄託者，謂當事人一方以物交付他方，他方允為保管之契約。寄託物為代替物時，如約定寄託物之所有權移轉於受寄人，並由受寄人以種類、品質、數量相同之物返還者，為消費寄託，自受寄人受領該物時起，準用關於消費借貸之規定。寄託物為金錢時，推定其為消費寄託。」（民 §589 I、§602 I、§603）</p>
+</blockquote>
+<ul>
+<li><strong>代表案</strong>：[9]臺灣高等法院 110 上 194、[43]臺北地院 111 訴 919</li>
+</ul>
+<h3 id="按語群-B金融機構乙種活存消費寄託冒領風險歸銀行">按語群 B：金融機構乙種活存＝消費寄託，冒領風險歸銀行</h3>
+<blockquote>
+<p>「金融機關與客戶間之乙種活期存款契約，具有消費寄託之性質，客戶得隨時請求返還寄託物……存款為第三人偽刻印章所冒領，（銀行）僅得對該冒領人為損害賠償之請求，要不得以第三人冒領之事由，主張對於（存款人）已生清償之效力。」</p>
+</blockquote>
+<ul>
+<li><strong>權威來源</strong>：最高法院 <strong>55 年台上字第 3018 號</strong>、<strong>57 年台上字第 2965 號</strong>、<strong>104 年度台上字第 243 號</strong>、99 年度台上字第 1888 號</li>
+<li><strong>代表案</strong>：[9]臺灣高等法院 110 上 194</li>
+</ul>
+<h3 id="按語群-C金錢存入帳戶所有權移轉存款人僅有債權">按語群 C：金錢存入帳戶所有權移轉、存款人僅有債權</h3>
+<blockquote>
+<p>「金融機關與存款戶係消費寄託關係，僅須存款戶將金錢之所有權移轉於金融機關，並約定金融機關返還相同之金額，即告成立。至存款戶交付金錢之來源如何……尚非金融機關所須或所得過問。」</p>
+</blockquote>
+<ul>
+<li><strong>權威來源</strong>：最高法院 <strong>93 年度台上字第 1735 號</strong></li>
+<li><strong>代表案</strong>：[43]臺北地院 111 訴 919、[2]臺灣高等法院 109 上易 1264</li>
+</ul>
+<h3 id="按語群-D第三人異議之訴須有足以排除執行之物權">按語群 D：第三人異議之訴須有足以排除執行之物權</h3>
+<blockquote>
+<p>「強制執行法第 15 條所謂就執行標的物有足以排除強制執行之權利者，係指對於執行標的物有所有權、典權、留置權、質權存在情形之一者而言。」→ 存款人對存款僅有債權、無物權，提第三人異議之訴無理由。</p>
+</blockquote>
+<ul>
+<li><strong>權威來源</strong>：最高法院 <strong>103 年度台上字第 860 號</strong>、52 年台上字第 1240 號</li>
+<li><strong>代表案</strong>：[43]臺北地院 111 訴 919</li>
+</ul>
+<h3 id="按語群-E債權準占有人之認定民-310③-交錯">按語群 E：債權準占有人之認定（民 §310③ 交錯）</h3>
+<blockquote>
+<p>持有存款人之<strong>存摺、印章或金融卡</strong>，足使他人認其為債權人者，為債權之準占有人；未持有上開可表彰債權之物者，<strong>非</strong>準占有人，向其清償不生效力。</p>
+</blockquote>
+<ul>
+<li><strong>代表案</strong>：[9]臺灣高等法院 110 上 194</li>
+</ul>
+<h3 id="按語群-F消費寄託未定期限之催告返還">按語群 F：消費寄託未定期限之催告返還</h3>
+<blockquote>
+<p>未定返還期限之消費寄託，受寄人得隨時返還，寄託人亦<strong>得定一個月以上之相當期限催告返還</strong>（民 §478 後段準用）。</p>
+</blockquote>
+<ul>
+<li><strong>代表案</strong>：[14]臺灣高等法院 110 上 467、[19]111 上易 1309、[31]113 上 903、[65]臺北地院 113 訴 6826</li>
+</ul>
+<hr>
+<h2 id="四語料內出現之其他引用判決頻率彙整">四、語料內出現之其他引用判決（頻率彙整）</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>篇數</th>
+<th>字號</th>
+</tr></thead><tbody>
+<tr>
+<td>2</td>
+<td>最高法院 92 年度台上字第 607 號（遺產交付脈絡）</td>
+</tr>
+<tr>
+<td>2</td>
+<td>最高法院 57 年台上字第 2965 號（冒領，見按語 B）</td>
+</tr>
+<tr>
+<td>2</td>
+<td>最高法院 99 年度台上字第 2034 號</td>
+</tr>
+<tr>
+<td>2</td>
+<td>最高法院 99 年度台上字第 1888 號（冒領，見按語 B）</td>
+</tr>
+<tr>
+<td>2</td>
+<td>最高法院 100 年度台上字第 415 號</td>
+</tr>
+<tr>
+<td>2</td>
+<td>最高法院 72 年度台上字第 4225 號</td>
+</tr>
+<tr>
+<td>2</td>
+<td>最高法院 97 年度台抗字第 185 號（涉外管轄類推）</td>
+</tr>
+</tbody></table></div>
+<blockquote>
+<p><em>說明</em>：本語料以地院／高院為主（最高法院判決僅 1 篇），故引用判決分散、單篇頻率偏低；上開<strong>按語群 A–F 之權威來源</strong>（55 台上 3018、57 台上 2965、93 台上 1735、103 台上 860 等）係從判決理由內文擷取之<strong>被引按語</strong>，雖出現篇數不高，但屬該爭點之制度性核心見解。</p>
+</blockquote>
+<hr>
+<h3 id="資料來源與侷限">資料來源與侷限</h3>
+<ul>
+<li>語料：74 篇民事判決（110–114 年，最高 1／高院 33／北院 40），已濾除裁定。</li>
+<li>法條頻率由 <code>cited_statutes</code> 欄位機械擷取，少數條號因 parser 斷詞可能略有誤差（如「項準用同法第478條」）。</li>
+<li>按語原文摘自判決理由，引用時請回查原判決全文核對。</li>
+</ul>
+    </main>
+  </div>
+</body>
+</html>

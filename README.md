@@ -14,6 +14,7 @@
 |---|---|---|---|
 | 一、抓取 | `harvester/harvest.py` | 用關鍵字大量抓判決存到本機 | `corpus/` 裡一堆判決檔 |
 | 二、分析 | 請 AI（Claude）讀 `corpus/` | 整理成辦案報告 | `reports/` 裡三份 .md 報告 |
+| 三、閱讀版 | `analysis/export_reports.py` | 把三份 Markdown 合併排版 | `reports_html/` 裡一份可閱讀、可列印 HTML |
 
 ---
 
@@ -74,6 +75,17 @@ C:\LLMWIKI\.mcp\taiwan-legal-db\Scripts\python.exe harvester\harvest.py --keywor
 AI 會用 `analysis/` 裡的輔助腳本分批讀完，最後在 `reports/` 產出三份 `.md`。
 （可參考已附的範例：`reports/返還寄託物-01~03`。）
 
+### 步驟 6：匯出成好讀的 HTML 閱讀版
+Markdown 適合版本控管，但不一定適合閱讀、列印或轉寄。產出三份 `.md` 後，可再執行：
+```powershell
+C:\Users\user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe analysis\export_reports.py 返還寄託物
+```
+輸出會放在：
+```text
+reports_html\返還寄託物-閱讀版.html
+```
+用瀏覽器開啟即可閱讀，也可以直接列印或另存 PDF。
+
 ---
 
 ## ⚙️ harvester 常用參數
@@ -106,7 +118,8 @@ caselaw-research/
 ├─ corpus/      抓下來的判決（JSON，每篇一檔）   ← 不上傳 GitHub
 ├─ state/       抓取進度與快取（可重建）          ← 不上傳 GitHub
 ├─ notes/       分析中間筆記                      ← 不上傳 GitHub
-└─ reports/     最終報告（.md，給人讀）           ← 會上傳 GitHub
+├─ reports/     最終報告（.md，供追蹤與 AI 後續處理）← 會上傳 GitHub
+└─ reports_html/閱讀版報告（.html，給人讀、列印）   ← 可重建
 ```
 **心法**：`state→corpus→notes→reports` 就是資料的旅程（原料 → 成品）。
 判決原始檔故意存成 JSON，是為了讓程式能精準統計（例如自動算法條出現次數）。
