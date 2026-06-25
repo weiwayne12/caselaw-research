@@ -18,6 +18,10 @@ env/
 /notes/**
 !/notes/.gitkeep
 
+# 個案分析輸出（可重建，預設不入庫；目錄結構以 .gitkeep 保留）
+/reports/*.md
+/reports_html/
+
 # OS / 編輯器
 .DS_Store
 Thumbs.db
