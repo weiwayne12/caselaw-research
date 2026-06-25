@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# 語料庫（大型，不入庫；目錄結構以 .gitkeep 保留）
+/corpus/**
+!/corpus/.gitkeep
+
+# 抓取狀態與快取（可重建）：state/ 整夾不入庫，只保留 .gitkeep
+/state/*
+!/state/.gitkeep
+
+# 分析中間產物（視需要決定是否入庫，預設忽略大檔）
+/notes/**
+!/notes/.gitkeep
+
+# OS / 編輯器
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
