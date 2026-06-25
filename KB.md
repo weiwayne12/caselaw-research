@@ -28,11 +28,15 @@
 
 ## 架構與耦合
 
-- **爬蟲引擎重用，不重寫**：Playwright + F5 WAF bypass 的爬蟲已存在於
-  `C:\LLMWIKI\.mcp\taiwan-legal-db`（核心套件 `mcp_server`）。harvester 直接 import 其 client 類別
-  （`JudicialSearchClient` / `JudgmentDocClient` / `CacheDB` / `JudicialWAFBypass`）。
-- **執行用該 venv 的 python**：
-  `C:\LLMWIKI\.mcp\taiwan-legal-db\Scripts\python.exe`（Python 3.12，已裝 playwright 等相依）。
+- **外部前置依賴：Taiwan Legal DB MCP**。本工具不自己爬司法院，而是重用「Taiwan Legal DB MCP」
+  （即提供 `search_judgments`／`get_judgment` 的 MCP 伺服器）背後的 Python 套件 `mcp_server`
+  作為爬蟲引擎（Playwright + F5 WAF bypass）。**使用者須自行安裝該 MCP**，不重寫爬蟲。
+- harvester 直接 import 其 client 類別（`JudicialSearchClient` / `JudgmentDocClient` /
+  `CacheDB` / `JudicialWAFBypass`），不走 MCP 協定（批次抓取不受單次上限與 context 限制）。
+- **執行須用該 MCP 的 venv python**（內含 playwright 等相依），路徑為 `<安裝根目錄>\Scripts\python.exe`。
+- **引擎定位**：harvester 以環境變數 `TAIWAN_LEGAL_DB_HOME`（指向 MCP 安裝根目錄）解析；
+  未設時退回預設候選 `C:\LLMWIKI\.mcp\taiwan-legal-db`（作者機器既有安裝）。
+  找不到時印出明確安裝指引並退出。**不得把該路徑寫死成唯一值**——新增預設請改 `_DEFAULT_HOMES`。
 - 該套件視為**唯讀重用**，不得修改。WAF cookies 沿用其共用檔（重用已暖機成果）；
   但快取 DB 導向本專案 `state/`，不污染共用安裝。
 

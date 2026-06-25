@@ -19,18 +19,25 @@
 
 ## 🧰 開始前你需要這些（重要）
 
-這個工具**借用**了一支已經寫好的爬蟲引擎（最難的「突破司法院防爬」部分），所以要先有它：
+本工具**不自己爬司法院**，而是重用「**Taiwan Legal DB MCP**」這支已經寫好的引擎
+（最難的「突破司法院防爬」部分已由它解決）。所以**第一件事就是先安裝這個 MCP**。
 
-1. **那支爬蟲引擎**：位於 `C:\LLMWIKI\.mcp\taiwan-legal-db`
-   （已內含 Playwright 等套件，無須另外安裝）。
-2. **用它的 Python 來執行本工具**，路徑是：
-   ```
-   C:\LLMWIKI\.mcp\taiwan-legal-db\Scripts\python.exe
-   ```
-   下面所有指令的開頭 `python` 都要換成這一長串路徑。
+### 步驟 0：安裝 Taiwan Legal DB MCP（前置條件，只需一次）
 
-> ⚠️ 如果你的電腦**沒有** `C:\LLMWIKI` 這支引擎，這個工具會跑不起來
-> （會出現「無法 import mcp_server」）。請先向專案提供者索取該引擎。
+1. **安裝 `taiwan-legal-db` MCP**（即提供 `search_judgments`／`get_judgment` 的那個 MCP 伺服器；
+   內含 Playwright 等相依）。安裝方式請見該 MCP 自己的說明文件。
+2. 記下它的**安裝根目錄**，底下會有 `Scripts\python.exe` 與 `Lib\site-packages`。
+   - 在本專案作者的機器上，這個路徑是 `C:\LLMWIKI\.mcp\taiwan-legal-db`（下方範例沿用它）。
+   - **你的路徑很可能不同** → 把下方指令裡的這段換成你的實際安裝路徑即可。
+3. （選用）若想省事，把環境變數 `TAIWAN_LEGAL_DB_HOME` 設成你的安裝根目錄，
+   本工具會自動偵測，指令裡就不必再寫死路徑。
+
+> **務必用「那個 MCP 的 venv python」來執行本工具**（因為 Playwright 等相依裝在它的 venv 裡）。
+> 路徑長這樣：`<你的MCP安裝路徑>\Scripts\python.exe`。
+> 下面所有指令開頭的那串 python 路徑，請換成你自己的。
+
+> ⚠️ 沒先裝 Taiwan Legal DB MCP 就會看到「**無法 import mcp_server（Taiwan Legal DB MCP 引擎）**」，
+> 並附上安裝指引。這不是 bug，是還沒裝前置引擎。
 
 ---
 
@@ -108,7 +115,7 @@ caselaw-research/
 
 ## ❓ 常見狀況
 
-- **「無法 import mcp_server」**：沒有 `C:\LLMWIKI` 那支引擎，或沒用它的 python 執行。請見上方「開始前你需要這些」。
+- **「無法 import mcp_server（Taiwan Legal DB MCP 引擎）」**：還沒裝 Taiwan Legal DB MCP，或沒用「它的 venv python」執行，或安裝路徑非預設又沒設 `TAIWAN_LEGAL_DB_HOME`。請見上方「步驟 0」。
 - **畫面中文變亂碼**：本工具已自動處理；若仍亂碼，是終端機編碼問題，可改用 Windows Terminal。
 - **抓一抓全部失敗、說連線失敗**：被司法院**暫時擋住**了（打太密集）。這不是壞掉，等幾分鐘到約一小時，
   用**同一條指令加 `--reuse-manifest`** 續抓即可，已抓的不會重抓。
@@ -118,7 +125,7 @@ caselaw-research/
 
 ## 📌 注意事項
 
-- 抓取依賴本機 `C:\LLMWIKI\.mcp\taiwan-legal-db` 引擎（已知耦合點；之後可改為本專案自有相依以便他人使用）。
+- 抓取依賴外部的 **Taiwan Legal DB MCP** 引擎（須自行安裝；路徑可用 `TAIWAN_LEGAL_DB_HOME` 設定，未設則退回作者機器的 `C:\LLMWIKI\.mcp\taiwan-legal-db`）。
 - `corpus/`、`state/`、`notes/` 已設定**不上傳**（判決原始檔與快取留在本機）。
 - 協作規範與完整技術細節見 **[`KB.md`](KB.md)**（本專案規範的唯一真實來源）。
 - 分析報告一律**中立呈現、不下結論、不替個案給建議**，僅供研究參考。

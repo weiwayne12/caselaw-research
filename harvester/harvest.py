@@ -36,10 +36,31 @@ for _stream in (sys.stdout, sys.stderr):
     except (AttributeError, ValueError):
         pass
 
-# ── 讓本檔在共用 venv 之外也能 import 到 mcp_server（防呆；正常用共用 venv 跑時非必要）──
-_SHARED_SITE_PACKAGES = Path(r"C:\LLMWIKI\.mcp\taiwan-legal-db\Lib\site-packages")
-if _SHARED_SITE_PACKAGES.is_dir() and str(_SHARED_SITE_PACKAGES) not in sys.path:
-    sys.path.insert(0, str(_SHARED_SITE_PACKAGES))
+# ── 定位 Taiwan Legal DB MCP 引擎（mcp_server 套件）──
+# 本工具重用「Taiwan Legal DB MCP」背後的 Python 套件 mcp_server 作為爬蟲引擎，
+# 並以該 MCP 的 venv python 執行（內含 playwright 等相依）。
+# 解析順序：環境變數 TAIWAN_LEGAL_DB_HOME → 預設候選路徑。
+# TAIWAN_LEGAL_DB_HOME 應指向 MCP 安裝根目錄（其下有 Lib/site-packages 與 Scripts/python.exe）。
+_DEFAULT_HOMES = [
+    r"C:\LLMWIKI\.mcp\taiwan-legal-db",  # 本機既有安裝
+]
+
+
+def _bootstrap_mcp_engine() -> None:
+    """把 Taiwan Legal DB MCP 的 site-packages 加進 sys.path（正常用其 venv python 跑時非必要，此為防呆）。"""
+    import os
+    candidates = []
+    env_home = os.environ.get("TAIWAN_LEGAL_DB_HOME", "").strip()
+    if env_home:
+        candidates.append(env_home)
+    candidates.extend(_DEFAULT_HOMES)
+    for home in candidates:
+        sp = Path(home) / "Lib" / "site-packages"
+        if sp.is_dir() and str(sp) not in sys.path:
+            sys.path.insert(0, str(sp))
+
+
+_bootstrap_mcp_engine()
 
 try:
     from mcp_server.cache.db import CacheDB
@@ -52,10 +73,12 @@ try:
     from mcp_server.config import COURT_CODES
 except ImportError as e:  # pragma: no cover
     sys.stderr.write(
-        f"無法 import mcp_server：{e}\n"
-        f"請用共用 venv 的 python 執行：\n"
-        f"  C:\\LLMWIKI\\.mcp\\taiwan-legal-db\\Scripts\\python.exe "
-        f"harvester\\harvest.py ...\n"
+        f"無法 import mcp_server（Taiwan Legal DB MCP 引擎）：{e}\n\n"
+        f"本工具依賴「Taiwan Legal DB MCP」作為爬蟲引擎。請先：\n"
+        f"  1. 安裝 taiwan-legal-db MCP（含 playwright 等相依）。\n"
+        f"  2. 用『該 MCP 的 venv python』執行本工具，例如：\n"
+        f"       <安裝路徑>\\Scripts\\python.exe harvester\\harvest.py ...\n"
+        f"  3. 若安裝路徑非預設，請設定環境變數 TAIWAN_LEGAL_DB_HOME 指向其安裝根目錄。\n"
     )
     sys.exit(2)
 
