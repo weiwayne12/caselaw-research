@@ -23,6 +23,7 @@
 - **官方來源優先**：判決出自司法院裁判書系統（FJUD）、法規出自全國法規資料庫。
 - **編碼**：所有檔案 UTF-8（無 BOM）。Windows 主控台預設 Big5，Python 程式須 `sys.stdout.reconfigure(encoding="utf-8")` 避免中文亂碼。
 - **分析中立原則（最重要）**：工具二的報告一律**中立呈現、不下結論、不評價、不給個案建議**。只整理見解光譜與事實分型，引用字號供回溯。
+- **白話案情可作為輸入**：使用者可用白話描述案情或法律疑問；AI 應先轉成檢索策略與法律爭點，再以實際判決全文查證後整理。不得用白話描述直接推論法律結論。
 
 ---
 
@@ -34,9 +35,13 @@
 - harvester 直接 import 其 client 類別（`JudicialSearchClient` / `JudgmentDocClient` /
   `CacheDB` / `JudicialWAFBypass`），不走 MCP 協定（批次抓取不受單次上限與 context 限制）。
 - **執行須用該 MCP 的 venv python**（內含 playwright 等相依），路徑為 `<安裝根目錄>\Scripts\python.exe`。
-- **引擎定位**：harvester 以環境變數 `TAIWAN_LEGAL_DB_HOME`（指向 MCP 安裝根目錄）解析；
-  未設時退回預設候選 `C:\LLMWIKI\.mcp\taiwan-legal-db`（作者機器既有安裝）。
+- **引擎定位**：harvester 以環境變數 `TAIWAN_LEGAL_DB_HOME`（指向 MCP venv 根目錄，其下有
+  `Lib/site-packages` 與 `Scripts/python.exe`）解析；未設時退回預設候選
+  `C:\Users\user\mcp-taiwan-legal-db\.venv`（**獨立安裝，與任何專案脫鉤；Claude 桌面版亦用此份**）。
   找不到時印出明確安裝指引並退出。**不得把該路徑寫死成唯一值**——新增預設請改 `_DEFAULT_HOMES`。
+- **編碼保險**：四月版引擎在載入 `pcode_all.json` 時未指定編碼，Windows 預設 cp950 會崩潰。
+  harvester 啟動時若非 UTF-8 模式，會自動設 `PYTHONUTF8=1` 並 `os.execv` 原地重啟，故直接用
+  venv python 跑即可，不必手動帶環境變數。
 - 該套件視為**唯讀重用**，不得修改。WAF cookies 沿用其共用檔（重用已暖機成果）；
   但快取 DB 導向本專案 `state/`，不污染共用安裝。
 
@@ -49,14 +54,17 @@
 | `harvester/harvest.py` | 工具一 CLI | ✅ |
 | `analysis/build_skim.py` | 工具二：全語料精簡略讀表（省 token 鳥瞰） | ✅ |
 | `analysis/dump_batch.py` | 工具二：成批吐出判決關鍵欄位供精讀 | ✅ |
+| `analysis/export_reports.py` | 工具二：將同一 slug 的三份 Markdown 合併為 HTML 閱讀版 | ✅ |
 | `corpus/<案由-slug>/<JID>.json` | 語料：每篇判決一個結構化 JSON | ❌ 忽略 |
 | `state/<slug>.manifest.jsonl` | 母體清單（可續抓） | ❌ 忽略 |
 | `state/legal_cache.db` | 抓取快取（可重建） | ❌ 忽略 |
 | `notes/<slug>-skim.md` | 分析中間略讀表 | ❌ 忽略 |
-| `reports/<slug>-NN-*.md` | 最終 SOP 報告（Markdown，給人讀） | ✅ |
+| `reports/<slug>-NN-*.md` | 個案 SOP 報告（Markdown，本機輸出） | ❌ 忽略 |
+| `reports_html/<slug>-閱讀版.html` | 個案閱讀版報告（HTML，本機輸出、可列印） | ❌ 忽略 |
 
 **分層心法**：`corpus/*.json` 是**機器用的結構化原始語料**；`reports/*.md` 是**人用的分析成品**。
 語料用 JSON 是為了讓欄位（主文、事實、引用法條…）可被程式精準抽取與彙總（例如免讀就統計法條頻率）。
+個案報告與閱讀版屬可重建輸出，預設只留本機，不提交 GitHub；GitHub 只維護工具、流程與規範。
 
 ---
 
@@ -96,8 +104,20 @@ main_text, facts, reasoning, cited_statutes, cited_cases, full_text, source_url,
    - `reports/<slug>-01-爭點光譜.md`：事實分型 + 各爭點實務見解分布（主流／少數／事實分型）。
    - `reports/<slug>-02-辦案檢核清單.md`：從反覆出現的調查事項、程序節點歸納之可勾選 SOP。
    - `reports/<slug>-03-常引按語與法條.md`：引用法條 + 引用判決依頻率排序，附最高法院按語原文與代表案。
+4. **閱讀版輸出**：`export_reports.py <slug>` → 產 `reports_html/<slug>-閱讀版.html`。HTML 用於閱讀、列印或另存 PDF；
+   Markdown 仍保留在本機作為 AI 後續處理與人工修訂來源。
 
 引用頻率類統計（如法條出現篇數）以 Python 直接彙總 `cited_statutes` / `cited_cases` 欄位，不需 Claude 逐篇讀。
+
+### 白話案情研究流程
+
+使用者若以白話描述案情，AI 應依下列順序處理：
+
+1. 將案情轉成可查證的檢索策略（法院、案件類型、年份、關鍵字群、主文關鍵字）。
+2. 以 Taiwan Legal DB MCP 或 harvester 取得實際判決；法律整理須回到判決全文與官方來源。
+3. 篩除不符合案型的結果，選出代表判決精讀。
+4. 產出三份 Markdown 報告與一份 HTML 閱讀版。
+5. 回覆時附上可回查字號或來源連結；查不到或樣本不足時明白說明限制。
 
 ---
 
@@ -106,6 +126,7 @@ main_text, facts, reasoning, cited_statutes, cited_cases, full_text, source_url,
 - 改 `harvester/harvest.py` 後：先 `<venv python> -m py_compile harvester/harvest.py`，
   再以小範圍 `--dry-run`（如 1 法院 × 2 年度）煙霧測試。
 - 改分析腳本後：以既有 `corpus/` 跑一次確認輸出。
-- **不得更動** `C:\LLMWIKI\.mcp\taiwan-legal-db`（唯讀重用）與 `judgment-workspace-repo`。
-- git：`corpus/`、`state/`、`notes/` 已於 `.gitignore` 忽略；提交前確認語料與快取未誤入庫。
+- **不得更動** `C:\Users\user\mcp-taiwan-legal-db`（Taiwan Legal DB MCP 獨立安裝，唯讀重用）與 `judgment-workspace-repo`。
+- git：`corpus/`、`state/`、`notes/`、`reports/*.md`、`reports_html/` 已於 `.gitignore` 忽略；提交前確認語料、快取與個案輸出未誤入庫。
+  若測試產出個案報告，只留本機；除非使用者明確要求發布特定報告，否則不得提交個案內容。
   未經明確要求不擅自 commit／push。
