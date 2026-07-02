@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """harvester — 司法院判決大量抓取 CLI（工具一）
 
-重用既有爬蟲套件 mcp_server（C:\\LLMWIKI\\.mcp\\taiwan-legal-db）的
+重用既有爬蟲套件 mcp_server（Taiwan Legal DB MCP 獨立安裝）的
 搜尋 / 取全文 client，自跑迴圈把某案由的「類似案件」抓成本機語料庫。
 
 設計原則：
@@ -10,8 +10,8 @@
   - 可續抓：corpus/<slug>/<JID>.json 存在 = 該篇已完成；重跑只補缺。
   - 逐筆容錯：單篇失敗記 errors.log 不中斷全局。
 
-用法（以共用 venv 的 python 執行）：
-  C:\\LLMWIKI\\.mcp\\taiwan-legal-db\\Scripts\\python.exe harvester\\harvest.py \\
+用法（以該 MCP 的 venv python 執行）：
+  C:\\Users\\user\\mcp-taiwan-legal-db\\.venv\\Scripts\\python.exe harvester\\harvest.py \\
       --keyword "分管協議" --case-type 民事 --slug 分管協議 \\
       --year-from 110 --year-to 114 --target 300
 
@@ -29,6 +29,16 @@ import time
 from datetime import datetime
 from pathlib import Path
 
+# Windows 若非 UTF-8 模式，先以 PYTHONUTF8=1 重啟自己再繼續。
+# 原因：重用的引擎 mcp_server 載入法規名清單（pcode_all.json，UTF-8）時，
+# 部分版本以系統預設編碼開檔，Windows 預設 cp950(Big5) 會直接崩潰。
+# PYTHONUTF8 須在直譯器啟動前設定才生效，故用 os.execv 原地重啟（utf8_mode 已開則略過，避免無限迴圈）。
+import os
+
+if sys.platform == "win32" and not sys.flags.utf8_mode:
+    os.environ["PYTHONUTF8"] = "1"
+    os.execv(sys.executable, [sys.executable, *sys.argv])
+
 # Windows 主控台預設 Big5(cp950)，中文 log 會變亂碼 → 強制 UTF-8 輸出。
 for _stream in (sys.stdout, sys.stderr):
     try:
@@ -42,13 +52,12 @@ for _stream in (sys.stdout, sys.stderr):
 # 解析順序：環境變數 TAIWAN_LEGAL_DB_HOME → 預設候選路徑。
 # TAIWAN_LEGAL_DB_HOME 應指向 MCP 安裝根目錄（其下有 Lib/site-packages 與 Scripts/python.exe）。
 _DEFAULT_HOMES = [
-    r"C:\LLMWIKI\.mcp\taiwan-legal-db",  # 本機既有安裝
+    r"C:\Users\user\mcp-taiwan-legal-db\.venv",  # 獨立安裝（與任何專案脫鉤；Claude 桌面版亦用此份）
 ]
 
 
 def _bootstrap_mcp_engine() -> None:
     """把 Taiwan Legal DB MCP 的 site-packages 加進 sys.path（正常用其 venv python 跑時非必要，此為防呆）。"""
-    import os
     candidates = []
     env_home = os.environ.get("TAIWAN_LEGAL_DB_HOME", "").strip()
     if env_home:
