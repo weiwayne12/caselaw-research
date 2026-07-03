@@ -110,8 +110,13 @@ FETCH_DELAY_MAX = 1.6
 FETCH_FAIL_CIRCUIT = 8
 FETCH_FAIL_DELAY = 1.5  # 每次失敗後的小退避秒數，避免持續猛打
 
-# 單格搜尋硬上限（套件本身也 cap 在 200）。
+# 單格搜尋基本批量（有 --target 時的最低撈取量，留裁定被濾掉的餘裕）。
 MAX_PER_CELL = 200
+
+# 單格搜尋預設上限。司法院每查詢系統僅回前 500 筆（第 501 筆起拿不到），
+# 500 已是單格可取得上限，再高只是空翻頁。引擎翻頁無逐頁延遲（一格 500 筆
+# 約連打 25 頁），故不建議調高；負載敏感時可用 --cell-cap 調低。
+CELL_CAP = 500
 
 logging.basicConfig(
     level=logging.INFO,
@@ -161,6 +166,7 @@ def doc_type_from_case_id(case_id: str) -> str:
 async def _search_cell_with_retry(
     search: JudicialSearchClient, label: str, *,
     keyword: str, main_text: str, case_type: str, court: str, year: int,
+    max_results: int,
 ) -> dict:
     """單格搜尋 + 有限次重試。
 
@@ -173,7 +179,7 @@ async def _search_cell_with_retry(
         res = await search.search(
             keyword=keyword, main_text=main_text, case_type=case_type,
             court=court, year_from=year, year_to=year,
-            max_results=MAX_PER_CELL,
+            max_results=max_results,
         )
         if res.get("success"):
             return res
@@ -197,17 +203,19 @@ async def build_manifest(
     target: int,
     manifest_path: Path,
     judgments_only: bool = True,
+    cell_cap: int = CELL_CAP,
 ) -> list[dict]:
     """對 (年度 × 法院) 逐格搜尋，跨格以 JID 去重，回傳並寫出 manifest。
 
     優先序：courts 依傳入順序（審級權威序）、年度由新到舊 → 截到 target 時保留最優先者。
     judgments_only=True 時，依 case_id 後綴在此階段直接濾掉「裁定」（不進清單、不抓全文）。
+    有 target 時單格只撈到「還缺的件數」（下限 MAX_PER_CELL，留濾裁定餘裕），不整格撈滿。
     """
     years = list(range(year_to, year_from - 1, -1))
     total_cells = len(years) * len(courts)
     log.info(
         "搜尋母體：%d 法院 × %d 年度 = %d 格（每格上限 %d 筆）",
-        len(courts), len(years), total_cells, MAX_PER_CELL,
+        len(courts), len(years), total_cells, cell_cap,
     )
 
     seen: dict[str, dict] = {}
@@ -219,10 +227,14 @@ async def build_manifest(
         for year in years:
             cell_i += 1
             label = f"{court} {year}年"
+            if target:
+                cell_max = min(cell_cap, max(target - len(seen), MAX_PER_CELL))
+            else:
+                cell_max = cell_cap
             res = await _search_cell_with_retry(
                 search, label,
                 keyword=keyword, main_text=main_text, case_type=case_type,
-                court=court, year=year,
+                court=court, year=year, max_results=cell_max,
             )
             if not res.get("success"):
                 log.warning("[%d/%d] %s 搜尋失敗（已重試 %d 次仍不過）：%s",
@@ -255,10 +267,13 @@ async def build_manifest(
                 }
                 new += 1
 
+            # 截斷判定：官網回報總數 > 實際取得數，且是被 --cell-cap 頂住
+            # （被 target 頂住屬刻意少撈，不算截斷）。
             flag = ""
-            if len(rows) >= MAX_PER_CELL:
-                truncated_cells.append(label)
-                flag = " ⚠破200上限(可能截斷,建議縮小)"
+            total_count = res.get("total_count") or 0
+            if total_count > len(rows) and cell_max >= cell_cap:
+                truncated_cells.append(f"{label}（{len(rows)}/{total_count}）")
+                flag = f" ⚠僅取得 {len(rows)}/{total_count} 筆"
             ruling_note = f"，濾掉裁定 {cell_rulings}" if cell_rulings else ""
             log.info("[%d/%d] %s：%d 筆，新增判決 %d%s（累計 %d）%s",
                      cell_i, total_cells, label, len(rows), new, ruling_note,
@@ -285,8 +300,9 @@ async def build_manifest(
     only_note = f"（只收判決，已濾掉裁定 {ruling_skipped} 件）" if judgments_only else "（含判決與裁定）"
     log.info("母體共 %d 件%s，已寫入 %s", len(manifest), only_note, manifest_path)
     if truncated_cells:
-        log.warning("以下格達 200 上限、可能未抓全（建議加 --main-text 或縮年度細分）：%s",
-                    "、".join(truncated_cells))
+        log.warning("以下格未抓全（單格上限 %d；總數逾 500 者司法院端亦僅提供前 500 筆，"
+                    "建議加 --main-text、更精準的關鍵字，或縮小年度／法院細分）：%s",
+                    cell_cap, "、".join(truncated_cells))
     return manifest
 
 
@@ -460,6 +476,7 @@ async def run(args) -> int:
                 courts=courts, year_from=year_from, year_to=year_to,
                 target=args.target, manifest_path=manifest_path,
                 judgments_only=judgments_only,
+                cell_cap=min(max(args.cell_cap, 1), CELL_CAP),
             )
             log.info("搜尋階段耗時 %.1fs", time.time() - t0)
 
@@ -528,6 +545,9 @@ def parse_args(argv=None):
                    help="截止民國年（預設今年）")
     p.add_argument("--target", type=int, default=0,
                    help="目標件數上限（達到即停搜尋；預設不限）")
+    p.add_argument("--cell-cap", dest="cell_cap", type=int, default=CELL_CAP,
+                   help=f"單格搜尋上限（預設 {CELL_CAP}；司法院每查詢僅提供前 500 筆，"
+                        f"調高無效，負載敏感時可調低）")
     p.add_argument("--include-rulings", dest="include_rulings", action="store_true",
                    help="連裁定一起收（預設只收判決，適合實體法研究）")
     p.add_argument("--slug", help="語料夾名稱（預設取自 keyword）")
