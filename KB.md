@@ -55,6 +55,7 @@
 | `analysis/build_skim.py` | 工具二：全語料精簡略讀表（省 token 鳥瞰） | ✅ |
 | `analysis/dump_batch.py` | 工具二：成批吐出判決關鍵欄位供精讀 | ✅ |
 | `analysis/export_reports.py` | 工具二：將同一 slug 的三份 Markdown 合併為 HTML 閱讀版 | ✅ |
+| `analysis/cite_report.py` | 工具二：輸入判決字號或見解文句，產生引用判解 Markdown / HTML 報告 | ✅ |
 | `corpus/<案由-slug>/<JID>.json` | 語料：每篇判決一個結構化 JSON | ❌ 忽略 |
 | `state/<slug>.manifest.jsonl` | 母體清單（可續抓） | ❌ 忽略 |
 | `state/legal_cache.db` | 抓取快取（可重建） | ❌ 忽略 |
@@ -108,6 +109,15 @@ main_text, facts, reasoning, cited_statutes, cited_cases, full_text, source_url,
    Markdown 仍保留在本機作為 AI 後續處理與人工修訂來源。
 
 引用頻率類統計（如法條出現篇數）以 Python 直接彙總 `cited_statutes` / `cited_cases` 欄位，不需 Claude 逐篇讀。
+
+### 引用判解報告
+
+`analysis/cite_report.py` 是獨立分析端 CLI，用於查「哪些裁判引用某判決字號」或「哪些裁判包含某段見解文句」，
+並輸出 `reports/<slug>-引用判解報告.md` 與 `reports_html/<slug>-引用判解報告.html`。字號輸入會自動展開常見格式
+與 `台／臺` 變體，全文檢索布林語法僅使用引擎文件保證的 `+`／`&`／`-`／`()`。若要查判決本身，使用
+`--judgment` 走 `case_word + case_number` 精確查詢。預設查引用該字號或包含該文字的裁判，且納入裁定；
+如需排除裁定才加 `--exclude-rulings`。預設法院為最高法院與臺灣高等法院，可用 `--courts` 覆寫，
+或以 `--all-courts` 查全部法院；`--max-results` 為每法院搜尋上限。
 
 ### 白話案情研究流程
 
