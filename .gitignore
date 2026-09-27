@@ -22,6 +22,17 @@ env/
 /reports/*.md
 /reports_html/
 
+# 根目錄 .md 採白名單：個案研究筆記一律不入庫（本 repo 為公開）
+/*.md
+!/KB.md
+!/README.md
+!/AGENTS.md
+!/CLAUDE.md
+
+# 獨立 GUI 下載器（8MB exe，不入庫）
+/2026-0619-J_DOWNLOADER/
+*.exe
+
 # OS / 編輯器
 .DS_Store
 Thumbs.db
