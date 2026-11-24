@@ -12,7 +12,7 @@
 - **工具一 harvester（抓取）**：用案由關鍵字大量抓「類似案件」存成本機語料庫。
 - **工具二 analysis（分析）**：由 Claude 分批讀本機語料，產出三種 SOP 產出（爭點光譜、辦案檢核清單、常引按語與法條清單）。
 
-僅處理**公開判決**，無個資包袱，正常 git 管理。與另一工作區 `judgment-workspace-repo` **完全無關，不得更動它**。
+僅處理**公開判決**，無個資包袱，正常 git 管理。與另一工作區 `judgment-workspace` **完全無關，不得更動它**。
 
 ---
 
@@ -138,7 +138,7 @@ main_text, facts, reasoning, cited_statutes, cited_cases, full_text, source_url,
 - 改 `harvester/harvest.py` 後：先 `<venv python> -m py_compile harvester/harvest.py`，
   再以小範圍 `--dry-run`（如 1 法院 × 2 年度）煙霧測試。
 - 改分析腳本後：以既有 `corpus/` 跑一次確認輸出。
-- **不得更動** `C:\Users\user\mcp-taiwan-legal-db`（Taiwan Legal DB MCP 獨立安裝，唯讀重用）與 `judgment-workspace-repo`。
+- **不得更動** `C:\Users\user\mcp-taiwan-legal-db`（Taiwan Legal DB MCP 獨立安裝，唯讀重用）與 `judgment-workspace`。
 - git：`corpus/`、`state/`、`notes/`、`reports/*.md`、`reports_html/` 已於 `.gitignore` 忽略；提交前確認語料、快取與個案輸出未誤入庫。
   若測試產出個案報告，只留本機；除非使用者明確要求發布特定報告，否則不得提交個案內容。
   未經明確要求不擅自 commit／push。
